@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             BloodStatusSeeder::class,
             DiplomaSeeder::class,
             StudentSeeder::class,
+            UserSeeder::class,
+            PermissionSeeder::class,
         ]);
     }
 }
