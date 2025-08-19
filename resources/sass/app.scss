@@ -17,11 +17,27 @@ $hogwarts-primary: #fcda00;
 }
 
 .btn-primary:hover {
-    // Use color.adjust to darken the color slightly
     background: darken($hogwarts-primary, 5%);
     border-color: darken($hogwarts-primary, 5%);
 }
 
 .bg-primary {
     background: $hogwarts-primary !important;
+}
+
+.pagination {
+    .page-link {
+        color: black;
+    }
+
+    .page-item.active .page-link {
+        background-color: $hogwarts-primary;
+        border-color: $hogwarts-primary;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
 }

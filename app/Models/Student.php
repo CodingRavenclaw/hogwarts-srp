@@ -22,10 +22,10 @@ class Student extends Model
         'diploma_id',
     ];
 
-    protected $dates = [
-        'birthday',
-        'enrollment_date',
-        'graduation_date',
+    protected $casts = [
+        'birthday' => 'date',
+        'enrollment_date' => 'date',
+        'graduation_date' => 'date',
     ];
 
     /**
