@@ -1,4 +1,6 @@
 @use "bootstrap/dist/css/bootstrap.min.css";
+@use "sass:color";
+@use "bootstrap-icons/font/bootstrap-icons.min.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -17,8 +19,8 @@ $hogwarts-primary: #fcda00;
 }
 
 .btn-primary:hover {
-    background: darken($hogwarts-primary, 5%);
-    border-color: darken($hogwarts-primary, 5%);
+    background: color.scale($hogwarts-primary, $lightness: -10%);
+    border-color: color.scale($hogwarts-primary, $lightness: -10%);
 }
 
 .bg-primary {

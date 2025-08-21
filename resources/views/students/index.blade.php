@@ -4,6 +4,30 @@
 
 @section('content')
     <div class="container-fluid p-lg-5">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const alert = document.getElementById("success-alert");
+                    if (alert) {
+                        setTimeout(() => {
+                            alert.classList.remove("show");
+                            alert.classList.add("fade");
+                            setTimeout(() => alert.remove(), 500);
+                        }, 5000);
+                    }
+                });
+            </script>
+        @endif
+
+
+        <div class="d-flex pb-3">
+            <a class="btn btn-success" href="{{route('students.add')}}">{{__('students.add_new_student')}}</a>
+        </div>
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
@@ -17,7 +41,8 @@
                     <th>{{__('students.blood_status.label')}}</th>
                     <th>{{__('students.enrollment_date')}}</th>
                     <th>{{__('students.graduation_date')}}</th>
-                    <th></th>
+                    <th>{{__('students.diploma.label')}}</th>
+                    <th>{{__('nav.actions')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,20 +64,15 @@
                         </td>
                         <td>{{ $student->birthday->format('d.m.Y') }}</td>
                         <td>{{ $student->house->name ?? 'N/A' }}</td>
-                        <td>
-                            @if($student->bloodStatus->short_name === 'NB')
-                                {{__('students.blood_status.nb')}}
-                            @elseif($student->bloodStatus->short_name === 'PB')
-                                {{__('students.blood_status.pb')}}
-                            @elseif($student->bloodStatus->short_name === 'HB')
-                                {{__('students.blood_status.hb')}}
-                            @elseif($student->bloodStatus->short_name === 'MB')
-                                {{__('students.blood_status.mb')}}
-                            @endif
-                        </td>
+                        <td>{{ __('students.blood_status.' . Str::lower($student->bloodStatus->short_name)) }}</td>
                         <td>{{ $student->enrollment_date->format('d.m.Y') }}</td>
-                        <td>{{ $student->graduation_date ? $student->graduation_date->format('d.m.Y') : 'N/A' }}</td>
-                        <td></td>
+                        <td>{{ $student->graduation_date ? $student->graduation_date->format('d.m.Y') : '' }}</td>
+                        <td>{{ $student->diploma ? __('students.diploma.' . Str::lower($student->diploma->short_name)) : ''}}</td>
+                        <td>
+                            <a href="{{ route('students.exportPdf', $student->id) }}" target="_blank">
+                                <i class="bi bi-file-pdf fs-4 text-danger"></i>
+                            </a>
+                        </td>
                     </tr>
                 @empty
                     <tr>

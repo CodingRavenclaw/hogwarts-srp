@@ -12,4 +12,5 @@ return [
     'users' => 'Benutzer',
     'permissions' => 'Berechtigungen',
     'roles' => 'Rollen',
+    'actions' => 'Aktionen',
 ];
