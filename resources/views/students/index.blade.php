@@ -26,7 +26,7 @@
 
 
         <div class="d-flex pb-3">
-            <a class="btn btn-success" href="{{route('students.add')}}">{{__('students.add_new_student')}}</a>
+            <a class="btn btn-success" href="{{route('students.add')}}">{{__('students.actions.add')}}</a>
         </div>
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -68,9 +68,15 @@
                         <td>{{ $student->enrollment_date->format('d.m.Y') }}</td>
                         <td>{{ $student->graduation_date ? $student->graduation_date->format('d.m.Y') : '' }}</td>
                         <td>{{ $student->diploma ? __('students.diploma.' . Str::lower($student->diploma->short_name)) : ''}}</td>
-                        <td>
+                        <td class="d-flex justify-content-between">
                             <a href="{{ route('students.exportPdf', $student->id) }}" target="_blank">
                                 <i class="bi bi-file-pdf fs-4 text-danger"></i>
+                            </a>
+                            <a href="{{route('students.edit', $student->id) }}">
+                                <i class="bt bi-pencil-square fs-4 text-success"></i>
+                            </a>
+                            <a href="{{route('students.remove', $student->id)}}">
+                                <i class="bt bi-trash-fill fs-4 text-danger"></i>
                             </a>
                         </td>
                     </tr>

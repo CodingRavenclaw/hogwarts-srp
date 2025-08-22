@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add student')
+@section('title', $student ? __('students.actions.edit') : __('students.actions.add'))
 
 @section('content')
     <div class="container">
@@ -14,7 +14,7 @@
                                class="form-control @error('first_name') is-invalid @enderror"
                                id="first_name"
                                name="first_name"
-                               value="{{ old('first_name') }}"
+                               value="{{ old('first_name', $student?->first_name ?? '') }}"
                                required>
                         @error('first_name')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -28,7 +28,7 @@
                                class="form-control @error('last_name') is-invalid @enderror"
                                id="last_name"
                                name="last_name"
-                               value="{{ old('last_name') }}"
+                               value="{{ old('last_name', $student?->last_name ?? '') }}"
                                required>
                         @error('last_name')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -43,13 +43,13 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input @error('gender') is-invalid @enderror"
                                    type="radio" name="gender" id="female" value="f"
-                                {{ old('gender', 'f') === 'f' ? 'checked' : '' }}>
+                                {{ old('gender', $student->gender ?? 'f') === 'f' ? 'checked' : '' }}>
                             <label class="form-check-label" for="female">{{__('students.gender.f')}}</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input @error('gender') is-invalid @enderror"
                                    type="radio" name="gender" id="male" value="m"
-                                {{ old('gender') === 'm' ? 'checked' : '' }}>
+                                {{ old('gender', $student?->gender ?? 'm') === 'm' ? 'checked' : '' }}>
                             <label class="form-check-label" for="male">{{__('students.gender.m')}}</label>
                         </div>
                         @error('gender')
@@ -65,7 +65,7 @@
                            class="form-control @error('birthday') is-invalid @enderror"
                            id="birthday"
                            name="birthday"
-                           value="{{ old('birthday') }}"
+                           value="{{ old('birthday', $student?->birthday->toDateString() ?? '') }}"
                            required>
                     @error('birthday')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -78,7 +78,8 @@
                     <select class="form-select @error('house_id') is-invalid @enderror"
                             name="house_id" id="house_id" required>
                         @foreach($houses as $house)
-                            <option value="{{ $house->id }}" {{ old('house_id') == $house->id ? 'selected' : '' }}>
+                            <option
+                                value="{{ $house->id }}" {{ old('house_id', $student?->house_id) == $house->id ? 'selected' : '' }}>
                                 {{ $house->name }}
                             </option>
                         @endforeach
@@ -93,9 +94,10 @@
                     <label for="blood_status_id">{{ __('students.blood_status.label') }}</label>
                     <select class="form-select @error('blood_status_id') is-invalid @enderror"
                             name="blood_status_id" id="blood_status_id" required>
-                        @foreach($bloodStatuses as $bloodStatus)
-                            <option value="{{ $bloodStatus->id }}" {{ old('blood_status_id') == $bloodStatus->id ? 'selected' : '' }}>
-                                {{ __('students.blood_status.' . Str::lower($bloodStatus->short_name)) }}
+                        @foreach($bloodStatuses as $diploma)
+                            <option
+                                value="{{ $diploma->id }}" {{ old('blood_status_id', $student?->blood_status_id) == $diploma->id ? 'selected' : '' }}>
+                                {{ __('students.blood_status.' . Str::lower($diploma->short_name)) }}
                             </option>
                         @endforeach
                     </select>
@@ -111,7 +113,7 @@
                            class="form-control @error('enrollment_date') is-invalid @enderror"
                            id="enrollment_date"
                            name="enrollment_date"
-                           value="{{ old('enrollment_date') }}"
+                           value="{{ old('enrollment_date', $student?->enrollment_date->toDateString()) }}"
                            required>
                     @error('enrollment_date')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -125,13 +127,32 @@
                            class="form-control @error('graduation_date') is-invalid @enderror"
                            id="graduation_date"
                            name="graduation_date"
-                           value="{{ old('graduation_date') }}">
+                           value="{{ old('graduation_date', $student?->graduation_date?->toDateString()) }}">
                     @error('graduation_date')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
-            <button type="submit" class="my-3 btn btn-success">{{ __('students.add_new_student') }}</button>
+            <div class="row my-3">
+                <div class="col-12">
+                    <label for="diploma_id">{{ __('students.diploma.label') }}</label>
+                    <select class="form-select @error('diploma_id') is-invalid @enderror"
+                            name="diploma_id" id="diploma_id">
+                        <option value="">-</option>
+                        @foreach($diplomas as $diploma)
+                            <option
+                                value="{{ $diploma->id }}" {{ old('diploma_id', $student?->diploma_id) == $diploma->id ? 'selected' : '' }}>
+                                {{ __('students.diploma.' . Str::lower($diploma->short_name)) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('diploma_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <button type="submit" class="my-3 btn btn-success">{{ __('students.actions.add') }}</button>
         </form>
     </div>
 @endsection

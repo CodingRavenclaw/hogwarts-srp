@@ -20,7 +20,6 @@ return [
     ],
     'enrollment_date' => 'Einschreibungsdatum',
     'graduation_date' => 'Abschlussdatum',
-    'add_new_student' => 'Neuen Schüler hinzufügen',
     'diploma' => [
         'label' => 'Abschluss',
         'degree' => 'Grad',
@@ -36,6 +35,7 @@ return [
     'student_file' => 'Schülerakte',
     'sign' => 'Unterschrift',
     'student' => 'Schüler/in',
+    'no_students_found' => 'Keine Schüler/innen gefunden.',
     'errors' => [
         'full_name_exists' => 'Ein Schüler mit diesem vollen Namen existiert bereits.',
         'house_required' => 'Das Haus ist erforderlich.',
@@ -45,5 +45,12 @@ return [
         'student_added' => 'Schüler/in erfolgreich hinzugefügt.',
         'student_updated' => 'Schüler/in erfolgreich aktualisiert.',
         'student_deleted' => 'Schüler/in erfolgreich gelöscht.',
+    ],
+    'actions' => [
+        'add' => 'Schüler/in hinzufügen',
+        'edit' => 'Schüler/in bearbeiten',
+        'remove' => 'Schüler/in löschen',
+        'remove_warning' => 'Sind Sie sicher, dass Sie diesen Schüler / diese Schülerin löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden!',
+        'export_student_file_as_pdf' => 'Schüler/innen-Akte als PDF exportieren',
     ],
 ];

@@ -13,4 +13,5 @@ return [
     'permissions' => 'Berechtigungen',
     'roles' => 'Rollen',
     'actions' => 'Aktionen',
+    'cancel' => 'Abbrechen',
 ];
