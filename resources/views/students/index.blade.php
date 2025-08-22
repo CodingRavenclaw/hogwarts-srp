@@ -68,7 +68,7 @@
                         <td>{{ $student->enrollment_date->format('d.m.Y') }}</td>
                         <td>{{ $student->graduation_date ? $student->graduation_date->format('d.m.Y') : '' }}</td>
                         <td>{{ $student->diploma ? __('students.diploma.' . Str::lower($student->diploma->short_name)) : ''}}</td>
-                        <td class="d-flex justify-content-between">
+                        <td class="d-flex justify-content-between" style="min-width: 120px">
                             <a href="{{ route('students.exportPdf', $student->id) }}" target="_blank">
                                 <i class="bi bi-file-pdf fs-4 text-danger"></i>
                             </a>

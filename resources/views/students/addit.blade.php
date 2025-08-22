@@ -4,7 +4,10 @@
 
 @section('content')
     <div class="container">
-        <form class="py-5" action="{{ route('students.store') }}" method="POST">
+        <form class="py-5" action="{{ $student ? route('students.update', $student->id) : route('students.store') }}" method="POST">
+            @if($student)
+                @method('PUT')
+            @endif
             @csrf
             <div class="row my-3">
                 <div class="col-12 col-md-6">
@@ -151,8 +154,7 @@
                     @enderror
                 </div>
             </div>
-
-            <button type="submit" class="my-3 btn btn-success">{{ __('students.actions.add') }}</button>
+            <button type="submit" class="my-3 btn btn-success">{{ $student ? __('students.actions.edit') : __('students.actions.add') }}</button>
         </form>
     </div>
 @endsection

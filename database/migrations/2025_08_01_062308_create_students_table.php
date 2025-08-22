@@ -25,6 +25,8 @@ return new class extends Migration
             $table->date('enrollment_date');
             $table->date('graduation_date')->nullable();
             $table->timestamps();
+
+            $table->unique(['first_name', 'last_name']);
         });
     }
 

@@ -7,20 +7,33 @@ use App\Models\Diploma;
 use App\Models\House;
 use App\Models\Student;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class StudentController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the students.
+     *
+     * @return View
+     */
+    public function index(): View
     {
         $students = Student::orderBy('last_name')->paginate(10);
 
         return view('students.index', compact('students'));
     }
 
-    public function add()
+    /**
+     * Show the form for creating a new student.
+     *
+     * @return View
+     */
+    public function add(): View
     {
         $houses = House::all();
         $bloodStatuses = BloodStatus::all();
@@ -34,9 +47,15 @@ class StudentController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    /**
+     * Store a newly created student in storage.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
     {
-        $data = $this->validateStudentData($request);
+        $data = $this->validateStudentData($request, null);
 
         $data['first_name'] = Str::of($data['first_name'])->trim()->value();
         $data['last_name'] = Str::of($data['last_name'])->trim()->value();
@@ -48,9 +67,14 @@ class StudentController extends Controller
             ->with('success', __('students.success.student_added'));
     }
 
-    public function delete(int $studentId)
+    /**
+     * Remove the specified student from storage.
+     *
+     * @param Student $student
+     * @return RedirectResponse
+     */
+    public function delete(Student $student): RedirectResponse
     {
-        $student = Student::findOrFail($studentId);
         $student->delete();
 
         return redirect()
@@ -58,7 +82,13 @@ class StudentController extends Controller
             ->with('success', __('students.success.student_deleted'));
     }
 
-    public function edit(Student $student)
+    /**
+     * Show the form for editing the specified student.
+     *
+     * @param Student $student
+     * @return View
+     */
+    public function edit(Student $student): View
     {
         $houses = House::all();
         $bloodStatuses = BloodStatus::all();
@@ -72,26 +102,70 @@ class StudentController extends Controller
         ]);
     }
 
-    public function remove(Student $student)
+    /**
+     * Update the specified student in storage.
+     *
+     * @param Request $request
+     * @param Student $student
+     * @return RedirectResponse
+     */
+    public function update(Request $request, Student $student): RedirectResponse
+    {
+        $data = $this->validateStudentData($request, $student->id);
+
+        $data['first_name'] = trim($data['first_name']);
+        $data['last_name'] = trim($data['last_name']);
+        $data['diploma_id'] = $data['diploma_id'] ?: null; // nullable sauber behandeln
+
+        $student->update($data);
+
+        return redirect()
+            ->route('students.index')
+            ->with('success', __('students.success.student_updated'));
+    }
+
+    /**
+     * Show the confirmation page for removing a student.
+     *
+     * @param Student $student
+     * @return View
+     */
+    public function remove(Student $student): View
     {
         return view('students.remove', compact('student'));
     }
 
-    public function exportPdf(Student $student)
+    /**
+     * Export the student file as a PDF.
+     *
+     * @param Student $student
+     * @return Response
+     */
+    public function exportPdf(Student $student): Response
     {
         $pdf = Pdf::loadView('students.pdf', compact('student'));
 
         return $pdf->stream();
     }
 
-    private function validateStudentData(Request $request)
+    /**
+     * Validate the student data from the request.
+     *
+     * @param Request $request
+     * @param int|null $ignoreId
+     * @return array
+     */
+    private function validateStudentData(Request $request, ?int $ignoreId = null): array
     {
+        $first = mb_strtolower(trim($request->input('first_name', '')));
+
         return $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255',
-                Rule::unique('students', 'last_name')->where(function ($q) use ($request) {
-                    $q->whereRaw('LOWER(TRIM(first_name)) = ?', [mb_strtolower(trim($request->input('first_name')))]);
-                }),
+            'last_name' => [
+                'required', 'string', 'max:255',
+                Rule::unique('students', 'last_name')
+                    ->ignore($ignoreId)
+                    ->where(fn ($q) => $q->whereRaw('LOWER(TRIM(first_name)) = ?', [$first])),
             ],
             'gender' => ['required', 'in:f,m'],
             'birthday' => ['required', 'date', 'before:today'],

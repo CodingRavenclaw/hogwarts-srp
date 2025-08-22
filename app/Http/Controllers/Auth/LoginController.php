@@ -3,26 +3,29 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
-    public function index()
+    /**
+     * Show the login form.
+     */
+    public function index(): View
     {
         return view('auth.login');
     }
 
-    public function login(Request $request)
+    /**
+     * Handle the login request.
+     */
+    public function login(Request $request): RedirectResponse
     {
-        // Logic for handling login
-        $credientials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:1',
-        ]);
+        $credentials = $this->validateLoginData($request);
 
-        // When creditentials are valid, you would typically authenticate the user
-        if (Auth::attempt($credientials)) {
+        if (Auth::attempt($credentials)) {
             return redirect()->intended('dashboard');
         } else {
             return back()->withErrors([
@@ -31,9 +34,23 @@ class LoginController extends Controller
         }
     }
 
-    public function logout()
+    /**
+     * Handle the logout request.
+     *
+     * @return RedirectResponse
+     */
+    public function logout(): RedirectResponse
     {
         Auth::logout();
+
         return redirect()->route('login');
+    }
+
+    private function validateLoginData(Request $request): array
+    {
+        return $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:1',
+        ]);
     }
 }

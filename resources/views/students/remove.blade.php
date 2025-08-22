@@ -6,9 +6,9 @@
     <div class="container">
         <form class="py-5" action="{{ route('students.delete', $student->id) }}" method="POST">
             @csrf
+            @method('DELETE')
             <h2 class="mb-4">{{ __('students.actions.remove') }}</h2>
-            <input type="hidden" name="id" value="{{ $student->id }}">
-            <p class="text-danger">{{ __('students.actions.remove_warning') }}</p>
+            <strong class="text-danger">{{ __('students.actions.remove_warning') }}</strong>
 
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
