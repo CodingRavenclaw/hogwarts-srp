@@ -70,16 +70,16 @@
             <tbody>
             @forelse($students as $student)
                 <tr>
-                    <td>{{ $student->id }}</td>
-                    <td>{{ $student->first_name }}</td>
-                    <td>{{ $student->last_name }}</td>
-                    <td>{{__('students.gender.' . $student->gender)}}</td>
-                    <td>{{ $student->birthday->format('d.m.Y') }}</td>
-                    <td>{{ $student->house->name ?? 'N/A' }}</td>
-                    <td>{{ __('students.blood_status.' . Str::lower($student->bloodStatus->short_name)) }}</td>
-                    <td>{{ $student->enrollment_date->format('d.m.Y') }}</td>
-                    <td>{{ $student->graduation_date ? $student->graduation_date->format('d.m.Y') : '' }}</td>
-                    <td>{{ $student->diploma ? __('students.diploma.' . Str::lower($student->diploma->short_name)) : ''}}</td>
+                    <td class="align-middle">{{ $student->id }}</td>
+                    <td class="align-middle">{{ $student->first_name }}</td>
+                    <td class="align-middle">{{ $student->last_name }}</td>
+                    <td class="align-middle">{{__('students.gender.' . $student->gender)}}</td>
+                    <td class="align-middle">{{ $student->birthday->format('d.m.Y') }}</td>
+                    <td class="align-middle">{{ $student->house->name ?? 'N/A' }}</td>
+                    <td class="align-middle">{{ __('students.blood_status.' . Str::lower($student->bloodStatus->short_name)) }}</td>
+                    <td class="align-middle">{{ $student->enrollment_date->format('d.m.Y') }}</td>
+                    <td class="align-middle">{{ $student->graduation_date ? $student->graduation_date->format('d.m.Y') : '' }}</td>
+                    <td class="align-middle">{{ $student->diploma ? __('students.diploma.' . Str::lower($student->diploma->short_name)) : ''}}</td>
                     <td class="d-flex justify-content-between" style="min-width: 120px">
                         <a href="{{ route('students.exportPdf', $student->id) }}" target="_blank">
                             <i class="bi bi-file-pdf fs-4 text-danger"></i>
