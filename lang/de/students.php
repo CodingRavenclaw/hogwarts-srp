@@ -52,5 +52,6 @@ return [
         'remove' => 'Schüler/in löschen',
         'remove_warning' => 'Sind Sie sicher, dass Sie diesen Schüler / diese Schülerin löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden!',
         'export_student_file_as_pdf' => 'Schüler/innen-Akte als PDF exportieren',
+        'search' => 'Suchen...',
     ],
 ];

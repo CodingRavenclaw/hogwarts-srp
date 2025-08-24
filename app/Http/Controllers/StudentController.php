@@ -115,12 +115,12 @@ class StudentController extends Controller
 
         $data['first_name'] = trim($data['first_name']);
         $data['last_name'] = trim($data['last_name']);
-        $data['diploma_id'] = $data['diploma_id'] ?: null; // nullable sauber behandeln
+        $data['diploma_id'] = $data['diploma_id'] ?: null;
 
         $student->update($data);
 
         return redirect()
-            ->route('students.index')
+            ->route('students.index', request()->only('search', 'page', 'sort', 'dir'))
             ->with('success', __('students.success.student_updated'));
     }
 

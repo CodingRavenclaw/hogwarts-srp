@@ -7,6 +7,7 @@
         <title>@yield('title', 'Hogwarts SRP')</title>
         <!-- Styles / Scripts -->
         @vite(['resources/js/app.js', 'resources/sass/app.scss'])
+        @livewireStyles
     </head>
     <body>
         <header>

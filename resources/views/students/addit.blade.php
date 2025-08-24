@@ -9,6 +9,11 @@
                 @method('PUT')
             @endif
             @csrf
+            <input type="hidden" name="search" value="{{ request('search') }}">
+            <input type="hidden" name="page" value="{{ request('page') }}">
+            <input type="hidden" name="sort" value="{{ request('sort') }}">
+            <input type="hidden" name="dir" value="{{ request('dir') }}">
+
             <div class="row my-3">
                 <div class="col-12 col-md-6">
                     <div class="form-group my-3 my-md-0">
